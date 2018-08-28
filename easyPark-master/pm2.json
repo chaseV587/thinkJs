@@ -1,8 +1,8 @@
 {
   "apps": [{
-    "name": "thinkjs-iview-master",
+    "name": "easyPark-master",
     "script": "production.js",
-    "cwd": "E:\chase\2018\work\08\iview-admin\thinkjs-iview-master",
+    "cwd": "E:\chase\2018\work\08\iview-admin\easyPark-master",
     "exec_mode": "fork",
     "max_memory_restart": "1G",
     "autorestart": true,
