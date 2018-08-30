@@ -36,11 +36,12 @@ export default {
           userName,
           password
         }).then(res => {
-          debugger
-          const data = res.data
-          console.log(data)
-          commit('setToken', data.token)
-          resolve(data)
+          if(res) {
+            const data = res.data
+            console.log(data)
+            commit('setToken', data.token)
+            resolve(data)
+          }
         }).catch(err => {
           reject(err)
         })
@@ -64,11 +65,8 @@ export default {
     },
     // 获取用户相关信息
     getUserInfo ({ state, commit }) {
-      debugger
       return new Promise((resolve, reject) => {
-        debugger
         getUserInfo(state.token).then(res => {
-          debugger
           const data = res.data
           commit('setAvator', data.avator)
           commit('setUserName', data.user_name)

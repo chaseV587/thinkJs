@@ -7,7 +7,6 @@ export const login = ({ userName, password }) => {
     userName,
     password
   }
-  debugger
   return axios.request({
     url: loginAction,
     data,
