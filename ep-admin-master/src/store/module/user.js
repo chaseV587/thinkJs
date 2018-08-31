@@ -36,7 +36,7 @@ export default {
           userName,
           password
         }).then(res => {
-          if(res) {
+          if (res) {
             const data = res.data
             console.log(data)
             commit('setToken', data.token)
