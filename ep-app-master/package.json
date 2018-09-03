@@ -15,7 +15,12 @@
   "dependencies": {
     "clean-webpack-plugin": "^0.1.16",
     "copy-webpack-plugin": "^4.0.1",
+    "ums-api": "^1.2.16",
     "ums-comp": "^2.0.2-beta.1",
+    "ums-weex-loader": "0.0.3-beta.1",
+    "vue-router": "^3.0.1",
+    "vuex": "^3.0.1",
+    "vuex-router-sync": "^5.0.0",
     "webpack": "^3.5.5",
     "zip-webpack-plugin": "^2.0.0"
   },
