@@ -1,0 +1,12 @@
+node_modules
+**/node_modules
+/.idea
+/.vscode
+coverage
+.DS_Store
+*.log
+~$*.*
+npm-debug*
+tmp/
+.eslintignore.js
+dist

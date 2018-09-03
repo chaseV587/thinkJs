@@ -1,0 +1,9 @@
+{
+  "packName": "ep-app-master",
+  "apkName": "easy-park",
+  "versionCode": "1.0.0",
+  "versionName": "1.0.0",
+  "icon": "favicon.png",
+  "enter": "index.js",
+  "description": "易停车"
+}
