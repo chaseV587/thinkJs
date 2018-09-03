@@ -1,29 +1,39 @@
 <template>
   <div class="wrapper" append="tree">
-    <div class="logo">
-      <image src="../../../static/images/logo.png" class="logo"></image>
-      
+    <div class="logo-wrap">
+      <image src="../../../static/images/logo.png" class="logo">
     </div>
-    <div class="">
-      <cell>
+    <div class="form-wrap">
+      <div>
         <text>用户名：</text>
         <input>
-      </cell>
-      <cell>
+      </div>
+      <div>
         <text>密码：</text>
         <input>
-      </cell>
-      <cell>
+      </div>
+      <div>
         <text>登录</text>
-      </cell>
+      </div>
     </div>
   </div>
 </template>
 
 <style>
-  .wrapper { align-items: center; padding-top: 180px; }
+  .wrapper { align-items: center; padding-top: 160px; }
   .title { font-size: 48px; margin-top: 50px; color: #004684}
-  .logo { width: 180px; height: 180px; }
+  .logo-wrap{
+    width: 750px;
+    height: 400px;
+    text-align: center;
+    flex-direction: column;
+  }
+  .logo {
+    width: 200px; 
+    height: 200px;
+    display: flex;
+    margin: 0 275px;
+  }
 </style>
 
 <script>
