@@ -16,6 +16,38 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `easypark_admin`
+--
+
+DROP TABLE IF EXISTS `easypark_admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `easypark_admin` (
+  `id` varchar(36) NOT NULL,
+  `username` varchar(60) NOT NULL DEFAULT '' COMMENT '用户名',
+  `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
+  `register_time` int(13) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
+  `login_time` int(13) unsigned NOT NULL DEFAULT '0' COMMENT '登录时间',
+  `nickname` varchar(60) NOT NULL COMMENT '昵称',
+  `mobile` varchar(20) NOT NULL COMMENT '手机号码',
+  `access` varchar(100) NOT NULL COMMENT '权限',
+  `avator` varchar(200) NOT NULL COMMENT '图像地址',
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `user_name` (`username`)
+) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `easypark_admin`
+--
+
+LOCK TABLES `easypark_admin` WRITE;
+/*!40000 ALTER TABLE `easypark_admin` DISABLE KEYS */;
+INSERT INTO `easypark_admin` VALUES ('67309e30-acf3-11e8-8981-95bf742aa11c','super_admin','a1300901254d6823d4a8fd6d217c6feb',2018,2018,'超级管理员','13312345678','[\'super_admin\', \'admin\']','https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png');
+/*!40000 ALTER TABLE `easypark_admin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `easypark_user`
 --
 
@@ -56,4 +88,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-30 18:30:31
+-- Dump completed on 2018-09-03 18:18:03
