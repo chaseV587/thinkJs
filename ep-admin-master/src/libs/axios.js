@@ -44,7 +44,6 @@ class httpRequest {
       }
       if (data.errno !== 0) {
         // 后端服务在个别情况下回报201，待确认
-        debugger
         if (data.errno === 401) {
           Cookies.remove(TOKEN_KEY)
           window.location.href = window.location.pathname + '#/login'
