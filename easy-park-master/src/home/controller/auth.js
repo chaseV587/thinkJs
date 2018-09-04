@@ -26,8 +26,8 @@ module.exports = class extends Base {
   async registerAction() {
     if (this.isPost) { // 判断是否发送信息给后台了，post数据过来.注意：isPost中的P是大写，js是对大小写敏感的。
       const username = this.post('username'); // 获取用户名给username变量
-      const adminModel = this.model('user');
-      const data = await adminModel.where({username: username}).find();
+      const userModel = this.model('user');
+      const data = await userModel.where({username: username}).find();
       // 到数据库中去查找看是否有数据（用户名相符）
       if (think.isEmpty(data)) { // 这里我直接用isEmpty居然不能用。查了下资料需要用think.isEmpty()
         const nickname = this.post('nickname');
@@ -61,6 +61,32 @@ module.exports = class extends Base {
         }
       } else {
         return this.fail(403, '用户名已存在，请确认'); // 注册不成功，返回错误信息。
+      }
+    }
+  };
+  async updateInfoAction() {
+    if (this.isPost) { // 判断是否发送信息给后台了，post数据过来.注意：isPost中的P是大写，js是对大小写敏感的。
+      const username = this.post('username'); // 获取用户名给username变量
+      const password = this.post('password');
+      const utilsSerivce = this.service('utils', 'api');
+      const password2 = utilsSerivce.md5(password);
+      const userModel = this.model('user');
+      const data = await userModel.where({username: username, password: password2}).find();
+      // 到数据库中去查找看是否有数据（用户名相符）
+      if (!think.isEmpty(data)) { // 这里我直接用isEmpty居然不能用。查了下资料需要用think.isEmpty()
+        const newPassword = this.post('newPassword');
+        const newPassword2 = utilsSerivce.md5(newPassword);
+        const isUpdate = await userModel.where({username: username}).update({password: newPassword2});
+        // 判断注册是否成功
+        if (think.isEmpty(isUpdate)) {
+          return this.fail(403, '修改密码失败！请重新修改'); // 修改密码不成功，返回错误信息。
+        } else {
+          return this.success({
+            status: 'ok' // 修改成功
+          });
+        }
+      } else {
+        return this.fail(403, '用户不存在，请确认'); // 用户名不存在，修改密码失败，返回错误信息。
       }
     }
   };
