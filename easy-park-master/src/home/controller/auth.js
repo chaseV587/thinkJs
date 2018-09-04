@@ -30,6 +30,11 @@ module.exports = class extends Base {
       const data = await adminModel.where({username: username}).find();
       // 到数据库中去查找看是否有数据（用户名相符）
       if (think.isEmpty(data)) { // 这里我直接用isEmpty居然不能用。查了下资料需要用think.isEmpty()
+        const nickname = this.post('nickname');
+        const mobile = this.post('mobile');
+        const pos_sn = this.post('pos_sn');
+        const mer_no = this.post('mer_no') || '';
+        const ter_no = this.post('ter_no') || '';
         const password = this.post('password');
         const utilsSerivce = this.service('utils', 'api');
         const password2 = utilsSerivce.md5(password);
@@ -38,12 +43,13 @@ module.exports = class extends Base {
           username: username,
           password: password2,
           register_time: utilsSerivce.getDateString(),
-          login_time: utilsSerivce.getDateString(),
-          nickname: '超级管理员',
-          mobile: '13312345678',
-          access: "['super_admin', 'admin']".toString(),
-          avator: 'https://file.iviewui.com/dist/a0e88e83800f138b94d2414621bd9704.png'
+          nickname: nickname,
+          mobile: mobile,
+          pos_sn: pos_sn,
+          mer_no: mer_no,
+          ter_no: ter_no,
         };
+        console.log(sqlData)
         const insertId = await adminModel.add(sqlData);
         // 判断注册是否成功
         if (think.isEmpty(insertId)) {
