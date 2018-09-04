@@ -77,7 +77,7 @@ const store = new Vuex.Store({
         userParam:'',
         times:{}, // 到期时间、备份时间的显示
         vipInfo:{},
-		checkStyle: '1',
+        checkStyle: '1',
         maskHeight: '300px',
     },
     mutations: {

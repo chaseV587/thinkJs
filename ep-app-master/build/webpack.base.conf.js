@@ -3,7 +3,7 @@
  */
 const webpack = require('webpack')
 const pathTo = require('path')
-const fs = require('fs')
+const fs = require('fs-extra')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 
@@ -41,7 +41,7 @@ function walk (dir) {
     })
 }
 
-walk()
+walk('page')
 
 const Plugins = [
   new CleanWebpackPlugin(['dist'], {
@@ -75,8 +75,12 @@ const Plugins = [
   ])
 ]
 
+entry = Object.assign({
+  "index": pathTo.join(__dirname, '../src/entry.js')
+}, entry)
+
 exports.nativeConfig = {
-  entry: entry,
+  entry,
   output: {
     filename: '[name].js',
     path: ASSERT_PATH,
@@ -85,7 +89,9 @@ exports.nativeConfig = {
   resolve: {
     extensions: ['.vue', '.js', '.json'],
     alias: {
-      entry: pathTo.resolve(__dirname, '../', 'src')
+      entry: pathTo.resolve(__dirname, '../', 'src'),
+      components: pathTo.resolve(__dirname, '../', 'src/components')
+      // components: path.resolve(projectRoot, 'src/components')
     }
   },
   module: {
@@ -119,7 +125,8 @@ exports.nativeConfig = {
       },
       {
         test: /\.vue$/,
-        use: 'weex-loader'
+        use: 'ums-weex-loader'
+        // use: 'weex-loader'
       }
     ]
   },

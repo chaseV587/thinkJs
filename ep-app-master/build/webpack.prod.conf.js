@@ -1,8 +1,7 @@
-const config = require('../config.json')
+let {nativeConfig} = require('./webpack.base.conf.js')
+
 const webpack = require('webpack')
 const ZipWebpackPlugin = require('zip-webpack-plugin')
-
-let {nativeConfig} = require('./webpack.base.conf.js')
 
 nativeConfig.plugins.push(
   new webpack.DefinePlugin({
@@ -10,7 +9,7 @@ nativeConfig.plugins.push(
   }),
   new ZipWebpackPlugin({
     path: '../',
-    filename: config.packName + '.zip'
+    filename: 'dist.zip'
   })
 )
 

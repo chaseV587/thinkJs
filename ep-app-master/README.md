@@ -1,14 +1,14 @@
-# ep-app-master
+# jxc
 
-> ep-app-master
+> jxc
 
-## 从银商cnpm私有仓库安装项目依赖
+## getting start
 
 ```bash
-cnpm install
+npm install
 ```
 
-## 项目模板目录结构
+## file structure
 
 * `src/*`: all source code
 * `app.js`: entrance of the Weex page
@@ -20,17 +20,20 @@ cnpm install
 * `.babelrc`: babel config (preset-2015 by default)
 * `.eslintrc`: eslint config (standard by default)
 
-## 常用编译命令
+## npm scripts
 
 ```bash
-# 编译源码，在dist下生成js bundle文件
+# build both two js bundles for Weex and Web
 npm run build
 
-# 打包dist文件，生成zip包
-npm run pack
+# build the two js bundles and watch file changes
+npm run dev
 
-# 对某个vue文件debug
-ums debug youfile.vue
+# start a Web server at 8080 port
+npm run serve
+
+# start weex-devtool for debugging with native
+npm run debug
 ```
 
 ## notes
