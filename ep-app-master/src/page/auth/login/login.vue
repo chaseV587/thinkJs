@@ -7,17 +7,20 @@
       <div class="form-item">
         <text class='item-text'>用户名：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入用户名">
+          <input type="text" class="input-text" placeholder="请输入用户名" v-model="username">
         </div>
       </div>
       <div class="form-item">
         <text class='item-text'>密    码：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入密码">
+          <input type="password" class="input-text" placeholder="请输入密码" v-model="password">
         </div>
       </div>
+      <div class="errInfo" >
+        <text class="errInfo">{{errInfo}}</text>
+      </div>
       <div>
-        <text class="login-btn">登录</text>
+        <text class="login-btn" @click='loginAction'>登录</text>
       </div>
       <div class="tip-wrap">
         <text class='tip-text'>注册</text>
@@ -88,7 +91,7 @@
   .tip-wrap{
     flex-direction: row;
     width: 300px;
-    margin: 160px 140px 0;
+    margin: 140px 140px 0;
   }
   .tip-text{
     flex:1;
@@ -97,14 +100,54 @@
     text-align: center;
     color: #666;
   }
+  .errInfo{
+    color: #e44359;
+    width: 600px;
+    text-align: center;
+    padding-top: 15px;
+  }
 </style>
 
 <script>
   export default {
-    data: {
-      target: 'LOGIN',
+    data: function () {
+      return {
+        errInfo: '',
+        username: 'test',
+        password: '123456'
+      }
+    },
+    computed: {
+    },
+    methods:{
+      init() {
+      },
+      // 登录
+      loginAction() {
+        this.errInfo = ''
+        console.log(this)
+        const username = this.username
+        const password = this.password
+        console.log(this.$store.state)
+        if(username && password) {
+          const param = {
+            username,
+            password
+          }
+          this.userLogin(param)
+            .then((data) => {
+              console.log(data)
+            })
+            .catch((res) =>{
+              console.log(res)
+              this.errInfo = res
+            })
+        }
+
+      }
     },
     created() {
+      this.init()
       console.log('login.vue')
     },
   }
