@@ -3,6 +3,9 @@
     <transition>
       <router-view class="r-box"></router-view>
     </transition>
+    <div class="loading-wrap" v-if='isShowLoading'>
+      <wxc-loading :show="isShow" type="default" loading-text='登录中'></wxc-loading>
+    </div>
   </div>
 </template>
 
@@ -19,12 +22,20 @@
 import mixins from './mixins/index.js';
 Vue.mixin(mixins);
 const meta = weex.requireModule('meta')
+import { WxcLoading, WxcPartLoading } from 'weex-ui';
 export default {
+  components: { WxcLoading, WxcPartLoading },
   data: {
-  },
-  components: {
+    isShow: true,
+    loadingText: ''
   },
   computed: {
+    // loading 监听
+    isShowLoading() {
+      const isShow = this.$store.state.app.isLoading
+      this.loadingText = this.$store.state.app.loadingText
+      return isShow
+    }
   },
   methods: {
   },
