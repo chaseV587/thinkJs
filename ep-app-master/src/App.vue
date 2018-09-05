@@ -4,7 +4,7 @@
       <router-view class="r-box"></router-view>
     </transition>
     <div class="loading-wrap" v-if='isShowLoading'>
-      <wxc-loading :show="isShow" type="default" loading-text='登录中'></wxc-loading>
+      <wxc-loading :show="isShow" type="default" :loading-text='loadingText'></wxc-loading>
     </div>
   </div>
 </template>
