@@ -1,8 +1,10 @@
 import http from './public'
 
-class api {
-    constructor() {
+export default {
+    methods: {
+        // 用户登录
+        userLogin(params) {
+            return http.fetchPost(`/auth/login`, params)
+        }
     }
-};
-
-export default new api()
+}
