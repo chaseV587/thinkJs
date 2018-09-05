@@ -47,12 +47,13 @@ module.exports = class extends Base {
           mobile: mobile,
           pos_sn: pos_sn,
           mer_no: mer_no,
-          ter_no: ter_no,
+          ter_no: ter_no
         };
-        console.log(sqlData)
-        const insertId = await adminModel.add(sqlData);
+        console.log(sqlData);
+        const insertId = await userModel.add(sqlData);
+        console.log(think.isEmpty(insertId));
         // 判断注册是否成功
-        if (think.isEmpty(insertId)) {
+        if (insertId !== 0) {
           return this.fail(403, '注册失败！请重新注册'); // 注册不成功，返回错误信息。
         } else {
           return this.success({
