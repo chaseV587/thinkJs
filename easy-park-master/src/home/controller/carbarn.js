@@ -135,4 +135,20 @@ module.exports = class extends Base {
       }
     }
   };
+  async queryAllAction() {
+    if (this.isPost) { // 判断是否发送信息给后台了，post数据过来.注意：isPost中的P是大写，js是对大小写敏感的。
+      const userId = this.post('user_id'); // 用户id,用来查询车位信息
+      const carbarnModel = this.model('carbarn');
+      // 到数据库中去查找看是否有数据（车位id和车位编号）
+      const data = await carbarnModel.where({user_id: userId}).select();
+      if (think.isEmpty(data)) {
+        return this.fail(403, '无车位信息');
+      } else {
+        return this.success({
+          status: 'ok', // 删除状态成功
+          data: data
+        });
+      }
+    }
+  }
 };
