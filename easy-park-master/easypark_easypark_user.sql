@@ -48,6 +48,58 @@ INSERT INTO `easypark_admin` VALUES ('67309e30-acf3-11e8-8981-95bf742aa11c','sup
 UNLOCK TABLES;
 
 --
+-- Table structure for table `easypark_carbarn`
+--
+
+DROP TABLE IF EXISTS `easypark_carbarn`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `easypark_carbarn` (
+  `user_id` varchar(36) NOT NULL DEFAULT '' COMMENT '用户id,用于关联用户表',
+  `park_id` varchar(36) NOT NULL DEFAULT '' COMMENT '车位ID',
+  `park_no` varchar(36) NOT NULL DEFAULT '0' COMMENT '车位编号',
+  `city` varchar(45) NOT NULL DEFAULT '' COMMENT '城市名',
+  `address` varchar(145) NOT NULL DEFAULT '' COMMENT '地址',
+  `park_status` int(11) NOT NULL DEFAULT '0' COMMENT '''车位状态编号：0-启用; 1-关闭; 2-维护'',',
+  `use_status` int(11) NOT NULL DEFAULT '0' COMMENT '使用状态： 0-空闲; 1-使用中',
+  `register_time` varchar(19) NOT NULL DEFAULT '' COMMENT '车位登记时间',
+  `price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '停车单价/小时',
+  PRIMARY KEY (`park_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+DROP TABLE IF EXISTS `easypark_park_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `easypark_park_order` (
+  `park_id` varchar(36) NOT NULL DEFAULT '' COMMENT '车位ID, 用于关联车位表',
+  `order_id` varchar(36) NOT NULL DEFAULT '' COMMENT '订单id',
+  `order_no` varchar(36) NOT NULL DEFAULT '' COMMENT '订单编号',
+  `car_no` varchar(8) NOT NULL DEFAULT '' COMMENT '车牌编号',
+  `mobile` varchar(20) NOT NULL COMMENT '手机号码',
+  `strat_time` varchar(19) NOT NULL DEFAULT '' COMMENT '开始时间',
+  `end_time` varchar(19) NOT NULL DEFAULT '' COMMENT '结束时间',
+  `is_timeout` int(1) NOT NULL DEFAULT '0' COMMENT '是否超时: 0:否; 1:是',
+  `over_time` varchar(19) NOT NULL DEFAULT '' COMMENT '超时时间',
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '停车单价/小时',
+  `total` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '总计金额',
+  `pay_type` varchar(10) NOT NULL DEFAULT '' COMMENT '支付方式',
+  `non_payment` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '欠费金额',
+  `is_inform` int(1) NOT NULL DEFAULT '0' COMMENT '是否通知: 0 未通知; 1 已经通知',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `easypark_carbarn`
+--
+
+LOCK TABLES `easypark_carbarn` WRITE;
+/*!40000 ALTER TABLE `easypark_carbarn` DISABLE KEYS */;
+/*!40000 ALTER TABLE `easypark_carbarn` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `easypark_user`
 --
 
@@ -55,10 +107,10 @@ DROP TABLE IF EXISTS `easypark_user`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `easypark_user` (
-  `id` mediumint(8) unsigned NOT NULL AUTO_INCREMENT,
+  `id` varchar(36) NOT NULL,
   `username` varchar(60) NOT NULL DEFAULT '' COMMENT '用户名',
   `password` varchar(32) NOT NULL DEFAULT '' COMMENT '密码',
-  `register_time` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '注册时间',
+  `register_time` varchar(19) NOT NULL DEFAULT '0' COMMENT '注册时间',
   `nickname` varchar(60) NOT NULL COMMENT '昵称',
   `mobile` varchar(20) NOT NULL COMMENT '手机号码',
   `pos_sn` varchar(30) NOT NULL COMMENT 'pos sn',
@@ -66,7 +118,7 @@ CREATE TABLE `easypark_user` (
   `ter_no` varchar(20) NOT NULL COMMENT '终端号',
   PRIMARY KEY (`id`),
   UNIQUE KEY `user_name` (`username`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4;
+) ENGINE=MyISAM AUTO_INCREMENT=294065 DEFAULT CHARSET=utf8mb4;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,7 +127,7 @@ CREATE TABLE `easypark_user` (
 
 LOCK TABLES `easypark_user` WRITE;
 /*!40000 ALTER TABLE `easypark_user` DISABLE KEYS */;
-INSERT INTO `easypark_user` VALUES (1,'super_admin','12345',1234545,'小曹','13312341234','84569552','123123213213','1233213');
+INSERT INTO `easypark_user` VALUES ('1','super_admin','12345','1234545','小曹','13312341234','84569552','123123213213','1233213'),('294064','1','e7b287a100ce76000dcb3ec9f5699250','2018','1','1','000001041752CA838303','',''),('eecb1260-b0e7-11e8-80e7-7104b425cbd5','2','e7b287a100ce76000dcb3ec9f5699250','2018','1','1','000001041752CA838303','',''),('5f187620-b0e8-11e8-80e7-7104b425cbd5','3','e7b287a100ce76000dcb3ec9f5699250','2018','1','1','000001041752CA838303','',''),('0a0da670-b0eb-11e8-92f0-733352dc80c9','5656','a1300901254d6823d4a8fd6d217c6feb','2018-09-05 17:06:56','5899','13589','000001041752CA838303','',''),('59106550-b0eb-11e8-a2a2-5754b7a28754','56561','a1300901254d6823d4a8fd6d217c6feb','2018-09-05 17:09:09','5899','13589','000001041752CA838303','',''),('8cda9ae0-b0eb-11e8-94ca-6d6f093c7060','565615','a1300901254d6823d4a8fd6d217c6feb','2018-09-05 17:10:36','5899','13589','000001041752CA838303','',''),('a9d4d160-b0eb-11e8-ab85-e166ad629ade','6855','a1300901254d6823d4a8fd6d217c6feb','2018-09-05 17:11:24','598','5845','000001041752CA838303','',''),('4a2095a0-b0ec-11e8-bd27-5f7118bbd0c1','test1','8456bb2e9e383000bc300b4057977b5d','2018-09-05 17:15:53','123','123321','123213','',''),('cafc6870-b0ec-11e8-ada8-57f26733a0c8','5698','a1300901254d6823d4a8fd6d217c6feb','2018-09-05 17:19:29','599','5999','000001041752CA838303','',''),('f8d88530-b0ec-11e8-ada8-57f26733a0c8','6663','a1300901254d6823d4a8fd6d217c6feb','2018-09-05 17:20:46','599','123456','000001041752CA838303','',''),('07f5ff20-b0ed-11e8-ada8-57f26733a0c8','66631','a1300901254d6823d4a8fd6d217c6feb','2018-09-05 17:21:12','599','123456','000001041752CA838303','','');
 /*!40000 ALTER TABLE `easypark_user` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -88,4 +140,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-03 18:18:03
+-- Dump completed on 2018-09-07 17:24:01
