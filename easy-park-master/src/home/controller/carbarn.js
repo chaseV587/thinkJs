@@ -75,7 +75,7 @@ module.exports = class extends Base {
         PRIMARY KEY (`park_id`)
       ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
        */
-      const utilsSerivce = this.service('utils', 'api');
+      // const utilsSerivce = this.service('utils', 'api');
       const userId = this.post('user_id'); // 用户id,用于关联用户表
       const parkNo = this.post('park_no'); // 车位编号
       const carbarnModel = this.model('carbarn');
@@ -104,15 +104,34 @@ module.exports = class extends Base {
         const isUpdate = await carbarnModel.where({user_id: userId, park_no: parkNo}).update(sqlData);
         console.log(isUpdate);
         if (isUpdate !== 1) {
-          return this.fail(403, '车位信息修改失败, 请重新修改'); // 注册不成功，返回错误信息。
+          return this.fail(403, '车位信息修改失败, 请重新修改'); // 修改不成功，返回错误信息。
         } else {
           return this.success({
-            status: 'ok', // 注册状态成功
+            status: 'ok', // 修改状态成功
             info: '车位信息修改成功'
           });
         }
       } else {
         return this.fail(403, '车位信息不存在，请确认'); // 注册不成功，返回错误信息。
+      }
+    }
+  };
+  // 删除车位信息
+  async delAction() {
+    if (this.isPost) { // 判断是否发送信息给后台了，post数据过来.注意：isPost中的P是大写，js是对大小写敏感的。
+      const userId = this.post('user_id'); // 用户id,用于关联用户表
+      const parkNo = this.post('park_no'); // 车位编号
+      const carbarnModel = this.model('carbarn');
+      // 到数据库中去查找看是否有数据（车位id和车位编号）
+      const affectedRows = await carbarnModel.where({user_id: userId, park_no: parkNo}).delete();
+      console.log('affectedRows：' + affectedRows);
+      if (affectedRows !== 0) {
+        return this.fail(403, '车位信息删除失败, 请重新删除');
+      } else {
+        return this.success({
+          status: 'ok', // 删除状态成功
+          info: '车位信息删除成功'
+        });
       }
     }
   };
