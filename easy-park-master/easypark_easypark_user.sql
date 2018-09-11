@@ -63,30 +63,8 @@ CREATE TABLE `easypark_carbarn` (
   `park_status` int(11) NOT NULL DEFAULT '0' COMMENT '''车位状态编号：0-启用; 1-关闭; 2-维护'',',
   `use_status` int(11) NOT NULL DEFAULT '0' COMMENT '使用状态： 0-空闲; 1-使用中',
   `register_time` varchar(19) NOT NULL DEFAULT '' COMMENT '车位登记时间',
-  `price` decimal(10,2) NOT NULL DEFAULT '0' COMMENT '停车单价/小时',
+  `price` decimal(10,0) NOT NULL DEFAULT '0' COMMENT '停车单价/小时',
   PRIMARY KEY (`park_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
-DROP TABLE IF EXISTS `easypark_park_order`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
-CREATE TABLE `easypark_park_order` (
-  `park_id` varchar(36) NOT NULL DEFAULT '' COMMENT '车位ID, 用于关联车位表',
-  `order_id` varchar(36) NOT NULL DEFAULT '' COMMENT '订单id',
-  `order_no` varchar(36) NOT NULL DEFAULT '' COMMENT '订单编号',
-  `car_no` varchar(8) NOT NULL DEFAULT '' COMMENT '车牌编号',
-  `mobile` varchar(20) NOT NULL COMMENT '手机号码',
-  `strat_time` varchar(19) NOT NULL DEFAULT '' COMMENT '开始时间',
-  `end_time` varchar(19) NOT NULL DEFAULT '' COMMENT '结束时间',
-  `is_timeout` int(1) NOT NULL DEFAULT '0' COMMENT '是否超时: 0:否; 1:是',
-  `over_time` varchar(19) NOT NULL DEFAULT '' COMMENT '超时时间',
-  `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '停车单价/小时',
-  `total` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '总计金额',
-  `pay_type` varchar(10) NOT NULL DEFAULT '' COMMENT '支付方式',
-  `non_payment` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '欠费金额',
-  `is_inform` int(1) NOT NULL DEFAULT '0' COMMENT '是否通知: 0 未通知; 1 已经通知',
-  PRIMARY KEY (`order_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -96,7 +74,46 @@ CREATE TABLE `easypark_park_order` (
 
 LOCK TABLES `easypark_carbarn` WRITE;
 /*!40000 ALTER TABLE `easypark_carbarn` DISABLE KEYS */;
+INSERT INTO `easypark_carbarn` VALUES ('111','111','123','123321','123213',0,1,'2018-09-10 15:41:15',1),('111','69139720-b4d7-11e8-926b-55cbd8e4316b','124','上海','张江',1,1,'2018-09-10 16:56:30',1);
 /*!40000 ALTER TABLE `easypark_carbarn` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `easypark_park_order`
+--
+
+DROP TABLE IF EXISTS `easypark_park_order`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!40101 SET character_set_client = utf8 */;
+CREATE TABLE `easypark_park_order` (
+  `park_id` varchar(36) NOT NULL DEFAULT '' COMMENT '车位ID, 用于关联车位表',
+  `order_id` varchar(36) NOT NULL DEFAULT '' COMMENT '订单id',
+  `order_no` varchar(36) NOT NULL DEFAULT '' COMMENT '订单编号',
+  `order_status` int(1) NOT NULL DEFAULT '0' COMMENT '订单状态 0:未支付 1：已支付: 2: 欠款',
+  `car_no` varchar(8) NOT NULL DEFAULT '' COMMENT '车牌编号',
+  `mobile` varchar(20) NOT NULL COMMENT '手机号码',
+  `strat_time` varchar(19) NOT NULL DEFAULT '' COMMENT '开始时间',
+  `end_time` varchar(19) NOT NULL DEFAULT '' COMMENT '结束时间',
+  `is_timeout` int(1) NOT NULL DEFAULT '0' COMMENT '是否超时: 0:否; 1:是',
+  `over_time` varchar(19) NOT NULL DEFAULT '' COMMENT '超时时间',
+  `price` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '停车单价/小时',
+  `total` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '总计金额',
+  `pay_type` varchar(10) NOT NULL DEFAULT '' COMMENT '支付方式',
+  `voucherNo` varchar(6) NOT NULL DEFAULT '' COMMENT '支付凭证号',
+  `non_payment` decimal(10,2) NOT NULL DEFAULT '0.00' COMMENT '欠费金额',
+  `is_inform` int(1) NOT NULL DEFAULT '0' COMMENT '是否通知: 0 未通知; 1 已经通知',
+  PRIMARY KEY (`order_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `easypark_park_order`
+--
+
+LOCK TABLES `easypark_park_order` WRITE;
+/*!40000 ALTER TABLE `easypark_park_order` DISABLE KEYS */;
+INSERT INTO `easypark_park_order` VALUES ('111','069a9a30-b595-11e8-a188-7b15b977439d','0001',1,'沪A88888','13312341234','2018-9-11 15:18:14','2018-9-11 20:18:14',0,'0',10.00,50.00,'现金','123456',0.00,0),('111','f8a47eb0-b593-11e8-8ac5-e73318ff2983','0001',1,'沪A88888','13312341234','2018-9-11 15:18:14','2018-9-11 20:18:14',0,'0',10.00,50.00,'现金','123456',0.00,0);
+/*!40000 ALTER TABLE `easypark_park_order` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -140,4 +157,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-09-07 17:24:01
+-- Dump completed on 2018-09-11 18:06:28
