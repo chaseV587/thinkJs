@@ -1,0 +1,112 @@
+.wrapper { 
+  width: 720px;
+  background-color: #fefefe; 
+  flex-direction: column;
+}
+.header{
+  width: 720px;
+  height: 90px;
+  line-height: 90px;
+  color: #fff;
+  background-color: #38DCB7;
+  flex-direction: row;
+}
+.header-flex{
+  flex: 1;
+  flex-direction: row;
+}
+.header-icon{
+  width: 40px;
+  height: 40px; 
+  margin: 25px 0;
+}
+.site-icon{
+  margin: 25px  0px 25px 25px;
+}
+.header-site{
+  line-height: 90px;
+  color: #fff;
+}
+.header-name{
+  line-height: 90px;
+  color: #fff;
+  font-size: 36px;
+  text-align: center;
+}
+.center-icon{
+  width: 40px;
+  height: 40px;
+  margin-left: 160px;
+}
+/*广告部分*/
+.ad-wrap{
+  width: 720px;
+  height: 240px;
+  flex-direction: row;
+  background-color: #4f4fc1;
+}
+.ad1{
+  width: 720px;
+  height: 240px;
+}
+.slider {
+  width: 720px;
+  height: 240px;
+}
+.frame {
+  width: 720px;
+  height: 240px;
+  position: relative;
+}
+/* 剩余车位 */
+.count-carbarn{
+  width: 720px;
+}
+.count-info{
+  width: 500px;
+  height: 90px;
+  font-size: 40px;
+  margin: 40px 110px;
+  display: inline-block;
+  background-color: #2cb893;
+  border-radius: 30px;
+  text-align: center;
+  line-height: 90px;
+  color: #fff;
+}
+
+/*中间菜单*/
+.menu-wrap{
+  width: 720px;
+  flex-direction: row;
+  margin: 10px 20px;
+}
+.menu-item{
+  flex-wrap: wrap;
+  width: 300px;
+  height: 300px;
+  margin: 20px;
+}
+.fast-park{
+  background-color: #6abfff;
+}
+.cur-park{
+  background-color: #9d5ee6;
+}
+.manage-park{
+  background-color: #ff665e;
+}
+.order-center{
+  background-color: #ffbe30;
+}
+.menu-icon{
+  width: 180px;
+  height: 180px;
+  margin: 20px 60px;
+}
+.menu-text{
+  width: 300px;
+  text-align: center;
+  color: #fff;
+  font-size: 36px; 
+}

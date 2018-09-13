@@ -43,7 +43,7 @@ export default {
     meta.setViewport({
       width: 720
     })
-    this.jump('/login')
+    this.jump('/home')
   }
 }
 </script>
