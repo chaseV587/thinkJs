@@ -11,6 +11,16 @@
     >
     <image slot="right" class="header-icon site-icon"  src='../../../static/image/icon-03.png'></image>
     </ums-header>
+    <div class="cell-wrap">
+      <div class="cell-item" v-for="(item, index) in parkList" v-bind:key="item.park_id">
+        <wxc-cell :label="index+1"
+          :title="item.park_no"
+          :has-arrow="true"
+          @wxcCellClicked="edit(item.park_id)"
+          :has-top-border="false"></wxc-cell>
+      </div>
+      
+    </div>
     
     
   </div>
@@ -32,15 +42,24 @@
 
 <script>
 import {UmsHeader} from 'ums-comp'
+import { WxcCell } from 'weex-ui';
   export default {
     components:{
-      UmsHeader
+      UmsHeader,
+      WxcCell
     },
     data: function () {
       return {
-        errInfo: '',
-        username: 'test',
-        password: '123456'
+        parkList: [
+          {
+            park_id: '1234',
+            park_no: 'ab123'
+          },
+          {
+            park_id: '1234',
+            park_no: 'ab123'
+          }
+        ]
       }
     },
     computed: {
@@ -48,7 +67,12 @@ import {UmsHeader} from 'ums-comp'
     methods:{
       init() {
       },
-      
+      edit(park_id) {
+        console.log('park_id: '+park_id)
+      },
+      rightClick() {
+        console.log('add---------------------------')
+      }
     },
     created() {
       this.init()
