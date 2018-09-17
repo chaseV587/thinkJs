@@ -1,6 +1,7 @@
 {
   "extends": "think",
   "rules": {
-    "no-console": "off"
+    "no-console": "off",
+    "camelcase": [2, {"properties": "never"}]
   }
 }

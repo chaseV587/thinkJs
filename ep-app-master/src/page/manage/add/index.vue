@@ -29,11 +29,20 @@
           <input type="text" class="input-text" placeholder="请输入地址" v-model="address">
         </div>
       </div>
-      <div class="form-item">
+      <div class="form-item form-status"  >
         <text class='item-text'>车位状态：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请选择停车状态" v-model="nickname">
+          <input type="text" class="input-text" placeholder="请选择停车状态" v-model="nickname" disabled='true' >
         </div>
+        <div class="chose-status" @click="choseStatus('wxc-popover2')"></div>
+        
+    <wxc-popover 
+      ref="wxc-popover2"
+      :buttons="btns2"
+      :position="popoverPosition2"
+      :arrowPosition="popoverArrowPosition2"
+      @wxcPopoverButtonClicked="popoverButtonClicked"
+    ></wxc-popover>
       </div>
       <div class="form-item">
         <text class='item-text'>单价/小时：</text>
@@ -45,7 +54,6 @@
         <text class="login-btn" @click='registerAction'>确定新增</text>
       </div>
     </div>
-    
     
   </div>
 </template>
@@ -74,6 +82,17 @@
     border-bottom-width: 1px ;
     border-color: #aaa;
     border-style: solid;
+  }
+  .form-statu{
+    position: relative;
+  }
+  .chose-status{
+    position: absolute;
+    width: 700px;
+    height: 100px;
+    z-index: 10;
+    left: 0;
+    top: 0;
   }
   .item-text{
     width: 230px;
@@ -128,16 +147,36 @@
 <script>
 import umsApi from 'ums-api'
 import {UmsHeader} from 'ums-comp'
-import { WxcCell } from 'weex-ui';
+import { WxcCell, WxcPopover } from 'weex-ui';
   export default {
     components:{
       UmsHeader,
-      WxcCell
+      WxcCell,
+      WxcPopover
     },
     data: function () {
       return {
         city: '',
-        address: ''
+        address: '',
+        btns: [
+          {
+            icon: '',
+            text: 'Scan',
+            key: 'key-scan'
+          },
+          {
+            icon: '',
+            text: 'My Qrcode',
+            key: 'key-qrcode'
+          },
+          {
+            icon: '',
+            text: 'Help',
+            key: 'key-help'
+          }
+        ],
+        popoverPosition:{x:-14,y:380},
+        popoverArrowPosition:{pos:'top',x:-15}
       }
     },
     computed: {
@@ -146,16 +185,22 @@ import { WxcCell } from 'weex-ui';
       init() {
         // 自动获取当前地址
         const info = umsApi.getDeviceInfo()
-        this.city = info.Location.City
-        const address = info.Location.Address
-        const newAddress = address.split(this.city)
-        this.address = newAddress[1]
+        if(info.Location) {
+          this.city = info.Location.City
+          const address = info.Location.Address
+          const newAddress = address.split(this.city)
+          this.address = newAddress[1]
+        }
       },
       edit(park_id) {
         console.log('park_id: '+park_id)
       },
       rightClick() {
         console.log('add---------------------------')
+      },
+      choseStatus(ref='wxc-popover2') {
+        console.log('1111111111111')
+        this.$refs[ref].wxcPopoverShow();
       }
     },
     created() {
