@@ -1,6 +1,7 @@
 export default {
   state: {
-    userInfo:{}
+    userInfo:{},
+    userId: '84569552'
   },
   mutations: {
     setUserInfo (state, param) {

@@ -1,6 +1,6 @@
 const stream = weex.requireModule('stream')
 import store from '../../store/index.js'
-const baseUrl = 'http://192.168.191.13:8360/home' // 服务器地址
+const baseUrl = 'http://192.168.43.6:8360/home' // 服务器地址
 export default {
 	fetchPost(url1, params = {}) {
 		store.commit('setLoading', true)
