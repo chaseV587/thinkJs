@@ -35,11 +35,11 @@
       </div>
     </div>
     <div class="menu-wrap">
-      <div class="menu-item  manage-park">
+      <div class="menu-item  manage-park" @click="goto('manage')">
         <image src='../../static/image/menu-01.png' class="menu-icon" ></image>
         <text class="menu-text">车位管理</text>
       </div>
-      <div class="menu-item order-center">
+      <div class="menu-item order-center" >
         <image src='../../static/image/menu-01.png' class="menu-icon" ></image>
         <text class="menu-text">订单中心</text>
       </div>
@@ -69,28 +69,10 @@
     methods:{
       init() {
       },
-      // 登录
-      loginAction() {
-        this.errInfo = ''
-        console.log(this)
-        const username = this.username
-        const password = this.password
-        console.log(this.$store.state)
-        if(username && password) {
-          const param = {
-            username,
-            password
-          }
-          this.userLogin(param)
-            .then((data) => {
-              console.log(data)
-            })
-            .catch((res) =>{
-              console.log(res)
-              this.errInfo = res
-            })
+      goto(url) {
+        if(url === 'manage') {
+          this.jump('/manage-index')
         }
-
       },
       registerAction() {
         this.jump('/register')

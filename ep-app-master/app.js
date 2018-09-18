@@ -12,4 +12,4 @@ sync(store, router)
 // export default new Vue(App)
 new Vue(Vue.util.extend({ el: '#root', router, store }, App))
 
-router.push('/manage-add')
+router.push('/home')

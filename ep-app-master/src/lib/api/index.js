@@ -10,6 +10,10 @@ export default {
     userRegister(params) {
         return http.fetchPost(`/auth/register`, params)
     },
+    // 车位列表查询
+    queryAllCarbarn(params) {
+      return http.fetchPost(`/carbarn/queryAll`, params)
+    },
     // 车位添加
     addCarbarn(params) {
       return http.fetchPost(`/carbarn/add`, params)

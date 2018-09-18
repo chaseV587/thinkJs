@@ -51,14 +51,14 @@ import { WxcCell } from 'weex-ui';
     data: function () {
       return {
         parkList: [
-          {
-            park_id: '1234',
-            park_no: 'ab123'
-          },
-          {
-            park_id: '1234',
-            park_no: 'ab123'
-          }
+          // {
+          //   park_id: '1234',
+          //   park_no: 'ab123'
+          // },
+          // {
+          //   park_id: '1234',
+          //   park_no: 'ab123'
+          // }
         ]
       }
     },
@@ -66,12 +66,25 @@ import { WxcCell } from 'weex-ui';
     },
     methods:{
       init() {
+        const user_id = this.$store.state.user.userId
+        const param = {
+          user_id
+        }
+        this.queryAllCarbarn(param)
+          .then((data) => {
+            this.parkList = data.data
+          })
+          .catch((res) =>{
+            console.log(res)
+            this.errInfo = res
+          })
       },
       edit(park_id) {
         console.log('park_id: '+park_id)
       },
       rightClick() {
         console.log('add---------------------------')
+        this.jump('/manage-add')
       }
     },
     created() {
