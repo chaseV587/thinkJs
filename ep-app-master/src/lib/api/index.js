@@ -17,6 +17,10 @@ export default {
     // 车位添加
     addCarbarn(params) {
       return http.fetchPost(`/carbarn/add`, params)
+    },
+    // 车位信息修改
+    updateCarbarn(params) {
+      return http.fetchPost(`/carbarn/update`, params)
     }
   }
 }

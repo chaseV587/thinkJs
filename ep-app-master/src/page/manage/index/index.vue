@@ -16,7 +16,7 @@
         <wxc-cell :label="index+1"
           :title="item.park_no"
           :has-arrow="true"
-          @wxcCellClicked="edit(item.park_id)"
+          @wxcCellClicked="edit(item)"
           :has-top-border="false"></wxc-cell>
       </div>
       
@@ -65,6 +65,9 @@ import { WxcCell } from 'weex-ui';
     computed: {
     },
     methods:{
+      leftClick() {
+        this.$router.back(-1)
+      },
       init() {
         const user_id = this.$store.state.user.userId
         const param = {
@@ -79,8 +82,12 @@ import { WxcCell } from 'weex-ui';
             this.errInfo = res
           })
       },
-      edit(park_id) {
-        console.log('park_id: '+park_id)
+      edit(item) {
+        console.log('item: '+item)
+        this.$store.commit('setSingleDate', item)
+        debugger
+        console.log(this.$store.carbarn)
+        this.jump('/manage-update')
       },
       rightClick() {
         console.log('add---------------------------')

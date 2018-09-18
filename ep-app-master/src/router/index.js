@@ -10,6 +10,8 @@ import homeView from '../page/home/index.vue'
 import parkListView from '../page/manage/index/index.vue'
 // 车位管理 添加
 import parkAddView from '../page/manage/add/index.vue'
+// 车位信息修改 添加
+import parkUpdateView from '../page/manage/update/index.vue'
 
 export default new VueRouter({
   routes: [
@@ -18,5 +20,6 @@ export default new VueRouter({
     { path: '/home', component: homeView }, // 首页页面
     { path: '/manage-index', component: parkListView }, // 车位管理 首页
     { path: '/manage-add', component: parkAddView }, // 车位管理 添加
+    { path: '/manage-update', component: parkUpdateView }, // 车位管理 修改
   ]
 })

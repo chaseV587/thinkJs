@@ -7,7 +7,7 @@
       @onLeftPartClick="leftClick"
       @onRightPartClick="rightClick"
       class="header"
-      title="添加车位"
+      title="车位信息修改"
     >
     </ums-header>
     <div class="form-wrap">
@@ -46,7 +46,7 @@
         <text class="errInfo">{{errInfo}}</text>
       </div>
       <div>
-        <text class="add-btn" @click='addAction'>确定新增</text>
+        <text class="add-btn" @click='addAction'>确定修改</text>
       </div>
     </div>
     <wxc-popover ref="wxc-popover2"
@@ -57,7 +57,7 @@
     ></wxc-popover>
     <wxc-dialog 
       title="提示"
-      content="车位添加成功！"
+      content="车位信息修改成功！"
       :show="show"
       :single="true"
       @wxcDialogConfirmBtnClicked="confirm">
@@ -200,14 +200,20 @@ const modal = weex.requireModule('modal');
         this.$router.back(-1)
       },
       init() {
-        // 自动获取当前地址
-        const info = umsApi.getDeviceInfo()
-        if(info.Location) {
-          this.city = info.Location.City
-          const address = info.Location.Address
-          const newAddress = address.split(this.city)
-          this.address = newAddress[1]
+        const carbarnInfo = this.$store.state.carbarn.singleDate
+        this.park_no = carbarnInfo.park_no
+        this.city = carbarnInfo.city
+        this.address = carbarnInfo.address
+        const park_status = carbarnInfo.park_status
+        this.park_status = park_status
+        if(park_status === 0) {
+          this.park_status_text = '启用'
+        } else if (park_status === 1) {
+          this.park_status_text = '关闭'
+        } else if (park_status === 2) {
+          this.park_status_text = '维护'
         }
+        this.price = carbarnInfo.price
       },
       // 选择停车状态 弹窗
       choseStatus(ref='wxc-popover2') {
@@ -263,7 +269,7 @@ const modal = weex.requireModule('modal');
           park_status,
           price,
         }
-        this.addCarbarn(param)
+        this.updateCarbarn(param)
           .then((data) => {
             console.log(data)
             this.show = true;
@@ -276,8 +282,8 @@ const modal = weex.requireModule('modal');
       },
       confirm(e) {
         this.show = false;
-        // this.jump('/home')
         this.$router.back(-1)
+        // this.jump('/home')
       }
     },
     created() {
