@@ -34,8 +34,11 @@ module.exports = class extends Base {
         const orderStatus = this.post('order_status'); // 订单状态 // 0:未支付 1：已支付: 2: 欠款
         const carNo = this.post('car_no'); // 车牌号
         const mobile = this.post('mobile'); // 停车用户手机号码
-        const stratTime = this.post('strat_time'); // 开始停车时间
-        const endTime = this.post('end_time'); // 截止停车时间
+        let startTime = this.post('start_time'); // 开始停车时间
+        if (startTime === 'time') {
+          startTime = utilsSerivce.getDateString();
+        }
+        const constTime = this.post('count_time'); // 停车总时间时间
         const isTimeout = this.post('is_timeout');
         const overTime = this.post('over_time');
         const price = this.post('price'); // 停车单价/小时
@@ -51,8 +54,8 @@ module.exports = class extends Base {
           order_status: orderStatus,
           car_no: carNo,
           mobile: mobile,
-          strat_time: stratTime,
-          end_time: endTime,
+          start_time: startTime,
+          count_time: constTime,
           is_timeout: isTimeout || 0,
           over_time: overTime || 0,
           price: price,
