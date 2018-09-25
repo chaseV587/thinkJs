@@ -4,10 +4,12 @@ import Vuex from 'vuex'
 import store from '../store/index.js'
 import router from '../router/index.js'
 import Api from '../lib/api/index.js'
+import utils from '../lib/utils/index.js'
 import { sync } from 'vuex-router-sync'
 
 sync(store, router)
 Vue.mixin(Api)
+Vue.mixin(utils)
 export default {
   router,
   store,

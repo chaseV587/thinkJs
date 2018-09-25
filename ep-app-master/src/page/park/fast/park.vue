@@ -14,68 +14,68 @@
       <div class="form-item form-status">
         <text class='item-text'>车位编号：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请选择车位编号" v-model="parkInfo.park_no">
+          <input type="text" class="input-text" placeholder="请选择车位编号" v-model="park_no">
         </div>
         
-        <div class="chose-status" @click="pickerParkNo()"></div>
+        <div class="chose-status" @click="choseStatus('wxc-popover2')"></div>
       </div>
       <div class="form-item">
         <text class='item-text'>车位地址：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入车位地址" v-model="parkInfo.address">
+          <input type="text" class="input-text" placeholder="请输入车位地址" v-model="address">
         </div>
       </div>
-      <div class="form-item"  >
+      <div class="form-item form-status"  >
         <text class='item-text'>车牌编号：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入车牌号" v-model="parkInfo.car_no" >
+          <input type="text" class="input-text" placeholder="请输入车牌号" v-model="park_status_text" disabled='true' >
         </div>
       </div>
-      <div class="form-item"  >
+      <div class="form-item form-status"  >
         <text class='item-text'>联系号码：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请联系号码" v-model="parkInfo.mobile">
+          <input type="text" class="input-text" placeholder="请选择停车状态" v-model="park_status_text" disabled='true' >
         </div>
+        <div class="chose-status" @click="choseStatus('wxc-popover2')"></div>
       </div>
       <div class="form-item">
         <text class='item-text'>停车时间：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车时长" v-model="parkInfo.count_time">
+          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="price">
         </div>
       </div>
       <div class="form-item">
         <text class='item-text'>单价/小时：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.price">
+          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="price">
         </div>
       </div>
-      <div class="form-item" v-if="parkInfo.totle">
+      <div class="form-item">
         <text class='item-text'>应收款：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.totle">
+          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="price">
         </div>
       </div>
       <div class="errInfo" >
         <text class="errInfo">{{errInfo}}</text>
       </div>
       <div>
-        <text class="add-btn" @click='addAction' v-if="displayButton === 1">确定停车</text>
-        <text class="add-btn" @click='payAction' v-if="displayButton === 2">去支付</text>
+        <text class="add-btn" @click='addAction'>确定新增</text>
       </div>
     </div>
+    <wxc-popover ref="wxc-popover2"
+      :buttons="parkListNo"
+      :position="popoverPosition2"
+      :arrowPosition="popoverArrowPosition2"
+      @wxcPopoverButtonClicked="popoverButtonClicked"
+    ></wxc-popover>
     <wxc-dialog 
       title="提示"
-      content="停车成功！"
+      content="车位添加成功！"
       :show="show"
       :single="true"
       @wxcDialogConfirmBtnClicked="confirm">
     </wxc-dialog>
-    <x-picker :type="pickerType"
-      :show="showPicker"
-      :dataset="parkListNo"
-      :defaultTitle="defaultTitle"
-      @overlayClick="pickerOverlayClick"
-      @onchange="change" />
   </div>
   
 </template>
@@ -167,31 +167,27 @@
 </style>
 
 <script>
-// import utils from 'utility'
 import umsApi from 'ums-api'
 import {UmsHeader} from 'ums-comp'
 import { WxcCell, WxcPopover, WxcDialog } from 'weex-ui';
-import { XPicker } from '../../../lib/component/weex-x-picker'
+const modal = weex.requireModule('modal');
   export default {
     components:{
       UmsHeader,
       WxcCell,
       WxcPopover,
-      WxcDialog,
-      XPicker
+      WxcDialog
     },
     data: function () {
       return {
-        displayButton: 1, // 1 确定停车 2 支付
         show: false,
         errInfo: '',
         parkInfo: {
-          park_id: '',
           park_no: '',
           address: '',
           car_no: '',
           mobile: '',
-          count_time: '',
+          time: '',
           price:'',
           totle: '',
           pay_type: '',
@@ -205,11 +201,22 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
         park_status_text: '',
         price:'',
         // '车位状态编号：0-启用; 1-关闭; 2-维护',
+        btns2: [
+          {
+            text: '启用',
+            key: 0
+          },
+          {
+            text: '关闭',
+            key: 1
+          },
+          {
+            text: '维护',
+            key: 2
+          }
+        ],
         popoverPosition2: { x: 260, y: 120 },
         popoverArrowPosition2: { pos: 'top', x: 60 },
-        pickerType: 'single',
-        showPicker: false,
-        defaultTitle : '地球'
       }
     },
     computed: {
@@ -224,17 +231,89 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
         const param = {
           user_id
         }
+        debugger
         this.queryAllCarbarn(param)
           .then((data) => {
             const parkList = data.data
             this.parkList = parkList
             let param = {}
-            const parkListNo = []
+            let parkListNo = [
+              {
+                text: '启用',
+                key: 0
+              },
+              {
+                text: '关闭',
+                key: 1
+              },
+              {
+                text: '维护',
+                key: 2
+              },
+              {
+                text: '启用',
+                key: 0
+              },
+              {
+                text: '关闭',
+                key: 1
+              },
+              {
+                text: '维护',
+                key: 2
+              },{
+                text: '启用',
+                key: 0
+              },
+              {
+                text: '关闭',
+                key: 1
+              },
+              {
+                text: '维护',
+                key: 2
+              },
+              {
+                text: '启用',
+                key: 0
+              },
+              {
+                text: '关闭',
+                key: 1
+              },
+              {
+                text: '维护',
+                key: 2
+              },
+              {
+                text: '启用',
+                key: 0
+              },
+              {
+                text: '关闭',
+                key: 1
+              },
+              {
+                text: '维护',
+                key: 2
+              },{
+                text: '启用',
+                key: 0
+              },
+              {
+                text: '关闭',
+                key: 1
+              },
+              {
+                text: '维护',
+                key: 2
+              }
+            ]
             parkList.forEach((item,index) => {
               console.log(item,index)
               param = {
-                title: item.park_no,
-                index: index
+                text: item.park_no,
+                key: index
               }
               parkListNo.push(param)
             })
@@ -246,150 +325,75 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
             this.errInfo = res
           })
       },
-      // 生成订单
-      addAction() {
-        this.errInfo = ''
-        /*
-        parkInfo: {
-          park_no: '',
-          address: '',
-          car_no: '',
-          mobile: '',
-          count_time: '',
-          price:'',
-          totle: '',
-          pay_type: '',
-        },
-         */
+      // 选择停车状态 弹窗
+      choseStatus(ref='wxc-popover2') {
+        console.log('1111111111111')
+        this.$refs[ref].wxcPopoverShow();
+      },
+      // 选择停车状态 
+      popoverButtonClicked (obj) {
         debugger
-        const park_id = this.parkInfo.park_id
-        const park_no = this.parkInfo.park_no
-        const address = this.parkInfo.address
-        const car_no = this.parkInfo.car_no
-        const mobile = this.parkInfo.mobile
-        const start_time = 'time';
-        const count_time = this.parkInfo.count_time
-        const price = this.parkInfo.price
-        let total = ''
-        debugger
-        if (price && count_time) {
-          total = Number(price) * Number(count_time)
-          this.parkInfo.total = total
-          this.displayButton = 2
+        console.log(obj)
+        const park_status = obj.key
+        this.park_status = park_status
+        if(park_status === 0) {
+          this.park_status_text = '启用'
+        } else if (park_status === 1) {
+          this.park_status_text = '关闭'
+        } else if (park_status === 2) {
+          this.park_status_text = '维护'
         }
-        const order_no = new Date().getTime()
-        const order_status = 0 // 订单状态 0:未支付 1：已支付: 2: 欠款
+      },
+      // 添加车位信息
+      addAction() {
+        debugger
+        this.errInfo = ''
+        const park_no = this.park_no
+        const city =  this.city
+        const address = this.address
+        let park_status = this.park_status
+        park_status = park_status.toString()
+        const price = this.price
         if (!park_no) {
           this.errInfo = '请输入车位编号'
+          return
+        } else if (!city) {
+          this.errInfo = '请输入所在城市'
           return
         } else if (!address) {
           this.errInfo = '请输入所在地址'
           return
-        } else if (!car_no) {
-          this.errInfo = '请输入车牌号'
-          return
-        } else if (!mobile) {
-          this.errInfo = '请输入手机号码'
+        } else if (!park_status) {
+          this.errInfo = '请输入车位状态'
           return
         } else if (!price) {
-          this.errInfo = '请输入单价'
+          this.errInfo = '请输入停车单价'
           return
         }
+        const user_id = this.$store.state.user.userId
         const param = {
-          park_id,
+          user_id,
           park_no,
+          city,
           address,
-          car_no,
-          mobile,
-          start_time,
-          count_time,
+          park_status,
           price,
-          order_no,
-          order_status,
-          total
         }
-        this.addOrder(param)
+        this.addCarbarn(param)
           .then((data) => {
             console.log(data)
-            // this.show = true;
+            this.show = true;
             // this.jump('/login')
-            this.displayButton = 2
           })
           .catch((res) =>{
             console.log(res)
             this.errInfo = res
           })
       },
-      // 支付
-      payAction() {
-        // 跳转智能桌面支付交易流程
-        console.log('goPay callSale!')
-        // var param = {
-        //     'amt': parseInt(this.accMul(this.orderData.totalAmount, 2))
-        // }
-        debugger
-        var param = {
-            'amt': parseInt(this.accMul(this.parkInfo.total, 2))
-        }
-        umsApi.callCashier(param, ret=> {
-            console.log(">>>Bing callCashier = " + ret)
-            if (ret.activityCode === -1) {
-              var data = JSON.parse(ret.data)
-              console.log('resultCode = ', data.resultCode)
-              if (data.resultCode === '0') {
-                if (data.transData.resCode === '00') {
-                  // 支付交易返回成功则更新数据库的交易状态和交易字段
-                  this.saleOrderData.payWay = data.appName
-                  if (data.appName !== '现金') {
-                      this.saleOrderData.traceNo = data.transData.traceNo
-                      this.saleOrderData.batchNo = data.transData.batchNo
-                      this.saleOrderData.refNo = data.transData.refNo
-                  } else {
-                    
-                  }
-                }
-              }
-            }
-            // if (callback !== undefined) {
-            //     callback(JSON.parse(ret))
-            // }
-        })
-      },
       confirm(e) {
         this.show = false;
         // this.jump('/home')
         this.$router.back(-1)
-      },
-      pickerParkNo() {
-        this.showPicker = true
-      },
-      pickerOverlayClick (e) {
-        this.showPicker = false
-      },
-      change (e) {
-        const value = e.value
-        const parkList = this.parkList
-        /*
-        parkInfo: {
-          park_no: '',
-          address: '',
-          car_no: '',
-          mobile: '',
-          time: '',
-          price:'',
-          totle: '',
-          pay_type: '',
-        },
-         */
-        parkList.forEach((item,index) => {
-          if (item.park_no === value) {
-            this.parkInfo.park_id = item.park_id
-            this.parkInfo.park_no = value
-            this.parkInfo.address = item.address
-            this.parkInfo.price = item.price
-          }
-        })
-        console.log(e)
       }
     },
     created() {

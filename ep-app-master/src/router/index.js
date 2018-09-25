@@ -13,6 +13,9 @@ import parkAddView from '../page/manage/add/index.vue'
 // 车位信息修改 添加
 import parkUpdateView from '../page/manage/update/index.vue'
 
+// 停车管理 立即停车
+import parkFastView from '../page/park/fast/index.vue'
+
 export default new VueRouter({
   routes: [
     { path: '/login', component: loginView }, // 登录页面
@@ -21,5 +24,6 @@ export default new VueRouter({
     { path: '/manage-index', component: parkListView }, // 车位管理 首页
     { path: '/manage-add', component: parkAddView }, // 车位管理 添加
     { path: '/manage-update', component: parkUpdateView }, // 车位管理 修改
+    { path: '/park-fast', component: parkFastView }, // 停车管理 立即停车
   ]
 })

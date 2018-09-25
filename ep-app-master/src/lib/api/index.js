@@ -21,6 +21,9 @@ export default {
     // 车位信息修改
     updateCarbarn(params) {
       return http.fetchPost(`/carbarn/update`, params)
+    },
+    addOrder(params) {
+      return http.fetchPost(`/order/add`, params)
     }
   }
 }
