@@ -1,0 +1,63 @@
+{
+  "_from": "weex-x-picker",
+  "_id": "weex-x-picker@1.0.8",
+  "_inBundle": false,
+  "_integrity": "sha512-sAGSaP8VxBpGetq5XsEtH8B+Pm+9B2dY3ZKtc28TlYqGJXjE3ueCMCrvIggEzGckxbI9cy5w6847Fyajq9C6tQ==",
+  "_location": "/weex-x-picker",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "tag",
+    "registry": true,
+    "raw": "weex-x-picker",
+    "name": "weex-x-picker",
+    "escapedName": "weex-x-picker",
+    "rawSpec": "",
+    "saveSpec": null,
+    "fetchSpec": "latest"
+  },
+  "_requiredBy": [
+    "#USER",
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/weex-x-picker/-/weex-x-picker-1.0.8.tgz",
+  "_shasum": "36fe2b4d3f0afc03ff5d8b2259542944fa7ef556",
+  "_spec": "weex-x-picker",
+  "_where": "e:\\chase\\2018\\work\\08\\easypark\\ep-app-master",
+  "author": {
+    "name": "Sirius"
+  },
+  "bugs": {
+    "url": "https://github.com/muzin/weex-x-picker/issues"
+  },
+  "bundleDependencies": false,
+  "dependencies": {},
+  "deprecated": false,
+  "description": "weex-x-picker 支持 single(单选)，area(区域)，section(区间)，date(日期)，time(时间), linkage(联动), 平台支持 IOS，Android，Web",
+  "homepage": "https://github.com/muzin/weex-x-picker#readme",
+  "keywords": [
+    "Weex",
+    "Vue",
+    "WeexComponent",
+    "Layout",
+    "picker",
+    "IOS",
+    "Android",
+    "Web"
+  ],
+  "license": "MIT",
+  "main": "index.js",
+  "name": "weex-x-picker",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/muzin/weex-x-picker.git"
+  },
+  "scripts": {},
+  "type": "weex",
+  "version": "1.0.8",
+  "weex": {
+    "plugins": {},
+    "market": {
+      "thumbnail": ""
+    }
+  }
+}
