@@ -83,6 +83,35 @@ module.exports = class extends Base {
       }
     }
   };
+  // 新增订单 后支付订单
+  async payAction() {
+    if (this.isPost) { // 判断是否发送信息给后台了，post数据过来.注意：isPost中的P是大写，js是对大小写敏感的。
+      const orderNo = this.post('order_no'); // 订单号
+      const orderModel = this.model('park_order');
+      // 到数据库中去查找看是否有数据（车位id和车位编号）
+      const data = await orderModel.where({order_no: orderNo}).find();
+      if (!think.isEmpty(data) && (data.order_status === 0 || data.order_status === 2)) { // 如果原订单存在  就可以去支付
+        const orderStatus = this.post('order_status'); // 订单状态 // 0:未支付 1：已支付: 2: 欠款
+        const payType = this.post('pay_type'); // 支付方式
+        const sqlData = {
+          order_status: orderStatus,
+          pay_type: payType
+        };
+        const isUpdate = await orderModel.where({order_no: orderNo}).update(sqlData);
+        console.log(isUpdate);
+        if (think.isEmpty(isUpdate)) {
+          return this.fail(403, '支付登记失败');
+        } else {
+          return this.success({
+            status: 'ok', // 修改成功
+            info: '订单支付登记成功'
+          });
+        }
+      } else {
+        return this.fail(403, '原订单不存在，请确认');
+      }
+    }
+  };
   // 查询订单
   async queryAction() {
     if (this.isPost) { // 判断是否发送信息给后台了，post数据过来.注意：isPost中的P是大写，js是对大小写敏感的。
