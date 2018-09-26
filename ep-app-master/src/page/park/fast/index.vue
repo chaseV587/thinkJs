@@ -49,10 +49,10 @@
           <input type="text" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.price">
         </div>
       </div>
-      <div class="form-item" v-if="parkInfo.totle">
+      <div class="form-item" v-if="parkInfo.total">
         <text class='item-text'>应收款：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.totle">
+          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.total">
         </div>
       </div>
       <div class="errInfo" >
@@ -193,8 +193,9 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
           mobile: '',
           count_time: '',
           price:'',
-          totle: '',
+          total: '',
           pay_type: '',
+          order_status: 0,
         },
         parkList: [],
         parkListNo: [],
@@ -261,7 +262,6 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
           pay_type: '',
         },
          */
-        debugger
         const park_id = this.parkInfo.park_id
         const park_no = this.parkInfo.park_no
         const address = this.parkInfo.address
@@ -271,13 +271,13 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
         const count_time = this.parkInfo.count_time
         const price = this.parkInfo.price
         let total = ''
-        debugger
         if (price && count_time) {
           total = Number(price) * Number(count_time)
           this.parkInfo.total = total
           this.displayButton = 2
         }
         const order_no = new Date().getTime()
+        this.parkInfo.order_no = order_no
         const order_status = 0 // 订单状态 0:未支付 1：已支付: 2: 欠款
         if (!park_no) {
           this.errInfo = '请输入车位编号'
@@ -322,37 +322,43 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
       },
       // 支付
       payAction() {
+        this.displayButton = 3
         // 跳转智能桌面支付交易流程
         console.log('goPay callSale!')
-        // var param = {
-        //     'amt': parseInt(this.accMul(this.orderData.totalAmount, 2))
-        // }
-        debugger
         var param = {
             'amt': parseInt(this.accMul(this.parkInfo.total, 2))
         }
         umsApi.callCashier(param, ret=> {
-            console.log(">>>Bing callCashier = " + ret)
-            if (ret.activityCode === -1) {
-              var data = JSON.parse(ret.data)
-              console.log('resultCode = ', data.resultCode)
-              if (data.resultCode === '0') {
-                if (data.transData.resCode === '00') {
-                  // 支付交易返回成功则更新数据库的交易状态和交易字段
-                  this.saleOrderData.payWay = data.appName
-                  if (data.appName !== '现金') {
-                      this.saleOrderData.traceNo = data.transData.traceNo
-                      this.saleOrderData.batchNo = data.transData.batchNo
-                      this.saleOrderData.refNo = data.transData.refNo
-                  } else {
-                    
-                  }
+          console.log(">>>Bing callCashier = " + ret)
+          var data1 = JSON.parse(ret)
+          if (data1.activityCode === -1) {
+            var data = JSON.parse(data1.data)
+            console.log('resultCode = ', data.resultCode)
+            if (data.resultCode === '0') {
+              if (data.transData.resCode === '00') {
+                // 支付交易返回成功则更新数据库的交易状态和交易字段
+                this.parkInfo.pay_type = data.appName
+                this.parkInfo.order_status = 1
+                const param = {
+                  pay_type: this.parkInfo.pay_type,
+                  order_no: this.parkInfo.order_no,
+                  order_status: this.parkInfo.order_status,
                 }
+                debugger
+                this.payOrder(param)
+                  .then((data) => {
+                    console.log(data)
+                    this.displayButton = 3
+                  })
+                  .catch((res) =>{
+                    console.log(res)
+                    this.errInfo = res
+                    this.displayButton = 2
+                  })
+                
               }
             }
-            // if (callback !== undefined) {
-            //     callback(JSON.parse(ret))
-            // }
+          }
         })
       },
       confirm(e) {

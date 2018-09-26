@@ -22,8 +22,13 @@ export default {
     updateCarbarn(params) {
       return http.fetchPost(`/carbarn/update`, params)
     },
+    // 添加停车订单
     addOrder(params) {
       return http.fetchPost(`/order/add`, params)
+    },
+    // 支付未支付订单
+    payOrder(params) {
+      return http.fetchPost(`/order/pay`, params)
     }
   }
 }
