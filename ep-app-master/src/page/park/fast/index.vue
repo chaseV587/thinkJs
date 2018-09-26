@@ -34,25 +34,25 @@
       <div class="form-item"  >
         <text class='item-text'>联系号码：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请联系号码" v-model="parkInfo.mobile">
+          <input type="number" class="input-text" placeholder="请联系号码" v-model="parkInfo.mobile">
         </div>
       </div>
       <div class="form-item">
         <text class='item-text'>停车时间：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车时长" v-model="parkInfo.count_time">
+          <input type="number" class="input-text" placeholder="请输入停车时长" v-model="parkInfo.count_time">
         </div>
       </div>
       <div class="form-item">
         <text class='item-text'>单价/小时：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.price">
+          <input type="number" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.price">
         </div>
       </div>
       <div class="form-item" v-if="parkInfo.total">
         <text class='item-text'>应收款：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.total">
+          <input type="number" class="input-text" placeholder="请输入停车单价" v-model="parkInfo.total">
         </div>
       </div>
       <div class="errInfo" >
@@ -61,6 +61,7 @@
       <div>
         <text class="add-btn" @click='addAction' v-if="displayButton === 1">确定停车</text>
         <text class="add-btn" @click='payAction' v-if="displayButton === 2">去支付</text>
+        <text class="add-btn" @click='printAction' v-if="displayButton === 3">打印</text>
       </div>
     </div>
     <wxc-dialog 
@@ -172,6 +173,7 @@ import umsApi from 'ums-api'
 import {UmsHeader} from 'ums-comp'
 import { WxcCell, WxcPopover, WxcDialog } from 'weex-ui';
 import { XPicker } from '../../../lib/component/weex-x-picker'
+import print from '../../../lib/print/index.js';
   export default {
     components:{
       UmsHeader,
@@ -222,25 +224,36 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
       init() {
         // 初始化获取车位列表
         const user_id = this.$store.state.user.userId
+        this.parkInfo.user_id = user_id
         const param = {
           user_id
         }
         this.queryAllCarbarn(param)
           .then((data) => {
             const parkList = data.data
-            this.parkList = parkList
-            let param = {}
-            const parkListNo = []
-            parkList.forEach((item,index) => {
-              console.log(item,index)
-              param = {
-                title: item.park_no,
-                index: index
-              }
-              parkListNo.push(param)
-            })
-            console.log(parkListNo)
-            this.parkListNo = parkListNo
+            debugger
+            if (parkList.length === 0) {
+              umsApi.modal.alert({
+                  'title':'提示',
+                  'message':'请先添加车位！',
+                  'okButton':'确认'}, ret=> {
+                      this.leftClick()
+              })
+            } else {
+              this.parkList = parkList
+              let param = {}
+              const parkListNo = []
+              parkList.forEach((item,index) => {
+                console.log(item,index)
+                param = {
+                  title: item.park_no,
+                  index: index
+                }
+                parkListNo.push(param)
+              })
+              console.log(parkListNo)
+              this.parkListNo = parkListNo
+            }
           })
           .catch((res) =>{
             console.log(res)
@@ -311,8 +324,7 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
         this.addOrder(param)
           .then((data) => {
             console.log(data)
-            // this.show = true;
-            // this.jump('/login')
+            this.parkInfo.start_time = data.data.start_time
             this.displayButton = 2
           })
           .catch((res) =>{
@@ -322,7 +334,7 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
       },
       // 支付
       payAction() {
-        this.displayButton = 3
+        this.displayButton = 4
         // 跳转智能桌面支付交易流程
         console.log('goPay callSale!')
         var param = {
@@ -344,20 +356,48 @@ import { XPicker } from '../../../lib/component/weex-x-picker'
                   order_no: this.parkInfo.order_no,
                   order_status: this.parkInfo.order_status,
                 }
-                debugger
                 this.payOrder(param)
                   .then((data) => {
                     console.log(data)
                     this.displayButton = 3
+                    this.printAction()
                   })
                   .catch((res) =>{
                     console.log(res)
                     this.errInfo = res
                     this.displayButton = 2
                   })
-                
               }
             }
+          }
+        })
+      },
+      // 打印
+      printAction() {
+        console.log(this.parkInfo)
+        print.startPrint(this.parkInfo, res => {
+          console.log(res)
+          const result = JSON.parse(res)
+          if(result.resultCode !== 0) {
+              umsApi.modal.confirm({
+                  'title':'提示',
+                  'message':'打印失败，是否需要重新打印？',
+                  'okButton':'确认',
+                  'cancelButton':'取消'}, ret=> {
+                      if (ret.result) {
+                          this.rePrint()
+                      } else {
+                          // this.goBack()
+                      }
+              })
+          } else {
+              // this.goBack()
+              umsApi.modal.alert({
+                  'title':'提示',
+                  'message':'订单支付成功',
+                  'okButton':'确认'}, ret=> {
+                      this.leftClick()
+              })
           }
         })
       },

@@ -39,7 +39,7 @@
       <div class="form-item">
         <text class='item-text'>单价/小时：</text>
         <div class="input-wrap">
-          <input type="text" class="input-text" placeholder="请输入停车单价" v-model="price">
+          <input type="number" class="input-text" placeholder="请输入停车单价" v-model="price">
         </div>
       </div>
       <div class="errInfo" >

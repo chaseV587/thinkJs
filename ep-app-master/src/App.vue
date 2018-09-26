@@ -38,6 +38,9 @@ export default {
     }
   },
   methods: {
+    goBack () {
+      this.$router.back(-1)
+    }
   },
   created() {
     meta.setViewport({

@@ -25,7 +25,7 @@
     </div>
     <!--中间菜单-->
     <div class="menu-wrap">
-      <div class="menu-item fast-park">
+      <div class="menu-item fast-park" @click="goto('park-fast')">
         <image src='../../static/image/menu-01.png' class="menu-icon" ></image>
         <text class="menu-text">立即停车</text>
       </div>
@@ -72,10 +72,9 @@
       goto(url) {
         if(url === 'manage') {
           this.jump('/manage-index')
+        } else if (url === 'park-fast') {
+          this.jump('/park-fast')
         }
-      },
-      registerAction() {
-        this.jump('/register')
       }
     },
     created() {
