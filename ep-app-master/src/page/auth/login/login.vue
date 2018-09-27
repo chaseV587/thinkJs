@@ -137,6 +137,9 @@
           this.userLogin(param)
             .then((data) => {
               console.log(data)
+              const userId = data.data.id
+              this.$store.commit('setUserId', userId)
+              this.jump('/home')
             })
             .catch((res) =>{
               console.log(res)
