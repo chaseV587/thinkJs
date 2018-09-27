@@ -216,7 +216,6 @@ const modal = weex.requireModule('modal');
       },
       // 选择停车状态 
       popoverButtonClicked (obj) {
-        debugger
         console.log(obj)
         const park_status = obj.key
         this.park_status = park_status
