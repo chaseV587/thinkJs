@@ -199,7 +199,8 @@ import { WxcDialog } from 'weex-ui';
       },
       confirm(e) {
         this.show = false;
-        this.jump('/login')
+        // this.jump('/login')
+        this.$router.back(-1)
       }
     },
     created() {
