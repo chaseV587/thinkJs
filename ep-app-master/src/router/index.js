@@ -15,6 +15,8 @@ import parkUpdateView from '../page/manage/update/index.vue'
 
 // 停车管理 立即停车
 import parkFastView from '../page/park/fast/index.vue'
+// 停车管理 实时车位(当天停车)
+import parkTodayView from '../page/park/today/index.vue'
 
 export default new VueRouter({
   routes: [
@@ -25,5 +27,6 @@ export default new VueRouter({
     { path: '/manage-add', component: parkAddView }, // 车位管理 添加
     { path: '/manage-update', component: parkUpdateView }, // 车位管理 修改
     { path: '/park-fast', component: parkFastView }, // 停车管理 立即停车
+    { path: '/park-today', component: parkTodayView }, // 停车管理 实时车位(当天停车)
   ]
 })

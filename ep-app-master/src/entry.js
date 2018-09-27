@@ -9,4 +9,4 @@ sync(store, router, api)
 // export default new Vue(App)
 new Vue(Vue.util.extend({ el: '#root', router, store, api }, App))
 
-router.push('/home')
+router.push('/login')

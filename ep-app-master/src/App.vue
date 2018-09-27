@@ -46,7 +46,7 @@ export default {
     meta.setViewport({
       width: 720
     })
-    this.jump('/park-fast')
+    this.jump('/login')
   }
 }
 </script>

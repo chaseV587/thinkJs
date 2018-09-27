@@ -1,0 +1,102 @@
+<template>
+  <div class="wrapper" append="tree">
+    <ums-header
+      height="90px"
+      fontSize="36px"
+      backgroundColor="#38DCB7"
+      @onLeftPartClick="leftClick"
+      @onRightPartClick="rightClick"
+      class="header"
+      title="车位管理"
+    >
+    <image slot="right" class="header-icon site-icon"  src='../../../static/image/icon-03.png'></image>
+    </ums-header>
+    <div class="cell-wrap">
+      <div class="cell-item" v-for="(item, index) in parkList" v-bind:key="item.park_id">
+        <wxc-cell :label="index+1"
+          :title="item.park_no"
+          :has-arrow="true"
+          @wxcCellClicked="edit(item)"
+          :has-top-border="false"></wxc-cell>
+      </div>
+      
+    </div>
+    
+    
+  </div>
+</template>
+
+<style>
+.wrapper { 
+  width: 720px;
+  background-color: #fefefe; 
+  flex-direction: column;
+}
+.header-icon{
+  width: 40px;
+  height: 40px; 
+  margin: 25px 25px;
+}
+  
+</style>
+
+<script>
+import {UmsHeader} from 'ums-comp'
+import { WxcCell } from 'weex-ui';
+  export default {
+    components:{
+      UmsHeader,
+      WxcCell
+    },
+    data: function () {
+      return {
+        parkList: [
+          // {
+          //   park_id: '1234',
+          //   park_no: 'ab123'
+          // },
+          // {
+          //   park_id: '1234',
+          //   park_no: 'ab123'
+          // }
+        ]
+      }
+    },
+    computed: {
+    },
+    methods:{
+      leftClick() {
+        this.$router.back(-1)
+      },
+      init() {
+        const user_id = this.$store.state.user.userId
+        const param = {
+          user_id
+        }
+        this.queryAllCarbarn(param)
+          .then((data) => {
+            this.parkList = data.data
+          })
+          .catch((res) =>{
+            console.log(res)
+            this.errInfo = res
+          })
+      },
+      edit(item) {
+        console.log('item: '+item)
+        this.$store.commit('setSingleDate', item)
+        debugger
+        console.log(this.$store.carbarn)
+        this.jump('/manage-update')
+      },
+      rightClick() {
+        console.log('add---------------------------')
+        this.jump('/manage-add')
+      }
+    },
+    created() {
+      this.init()
+      console.log('login.vue')
+    },
+  }
+</script>
