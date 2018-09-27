@@ -226,12 +226,12 @@ import print from '../../../lib/print/index.js';
         const user_id = this.$store.state.user.userId
         this.parkInfo.user_id = user_id
         const param = {
-          user_id
+          user_id,
+          use_status: 0
         }
         this.queryAllCarbarn(param)
           .then((data) => {
             const parkList = data.data
-            debugger
             if (parkList.length === 0) {
               umsApi.modal.alert({
                   'title':'提示',
@@ -287,7 +287,7 @@ import print from '../../../lib/print/index.js';
         if (price && count_time) {
           total = Number(price) * Number(count_time)
           this.parkInfo.total = total
-          this.displayButton = 2
+          this.displayButton = 4
         }
         const order_no = new Date().getTime()
         this.parkInfo.order_no = order_no
@@ -324,12 +324,14 @@ import print from '../../../lib/print/index.js';
         this.addOrder(param)
           .then((data) => {
             console.log(data)
+            debugger
             this.parkInfo.start_time = data.data.start_time
             this.displayButton = 2
           })
           .catch((res) =>{
             console.log(res)
             this.errInfo = res
+            this.displayButton = 1
           })
       },
       // 支付
@@ -355,6 +357,8 @@ import print from '../../../lib/print/index.js';
                   pay_type: this.parkInfo.pay_type,
                   order_no: this.parkInfo.order_no,
                   order_status: this.parkInfo.order_status,
+                  use_status: 1,
+                  park_id: this.parkInfo.park_id
                 }
                 this.payOrder(param)
                   .then((data) => {
