@@ -7,7 +7,7 @@ module.exports = class extends Base {
       const password = this.post('password');
       const utilsSerivce = this.service('utils', 'api');
       const password2 = utilsSerivce.md5(password);
-      const data = await this.model('admin').where({username: username, password: password2}).find(); // 到数据库中去查找看是否有数据（用户名密码同时相符）
+      const data = await this.model('user').where({username: username, password: password2}).find(); // 到数据库中去查找看是否有数据（用户名密码同时相符）
       if (think.isEmpty(data)) { // 这里我直接用isEmpty居然不能用。查了下资料需要用think.isEmpty()
         return this.fail(403, '账号密码错误！请重新填写'); // 登录不成功，返回错误信息。
       } else {
@@ -18,6 +18,7 @@ module.exports = class extends Base {
         };
         const token = await TokenSerivce.create(userInfo);
         return this.success({
+          data,
           token
         }); // 登录成功将用户信息写入session，返回到user首页。
       }
