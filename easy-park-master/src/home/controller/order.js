@@ -28,7 +28,8 @@ module.exports = class extends Base {
       const carbarnModel = this.model('carbarn');
       // 到数据库中去查找看是否有数据（车位id和车位编号）
       const data = await carbarnModel.where({park_id: parkId}).find();
-      if (!think.isEmpty(data) && data.park_status === 0) { // 如果车位存在，且可以使用，就可以停车
+      console.log(data);
+      if (!think.isEmpty(data) && data.park_status === 0 && data.use_status === 0) { // 如果车位存在，且可以使用，就可以停车
         const orderModel = this.model('park_order');
         const orderNo = this.post('order_no'); // 订单号
         const orderStatus = this.post('order_status'); // 订单状态 // 0:未支付 1：已支付: 2: 欠款
@@ -70,8 +71,8 @@ module.exports = class extends Base {
         if (insertId !== 0) {
           return this.fail(403, '订单登记失败, 请重新登记'); // 订单登记不成功，返回错误信息。
         } else {
-          const isUpdate = await carbarnModel.where({park_id: parkId}).update({use_status: 1});
-          console.log(isUpdate);
+          // const isUpdate = await carbarnModel.where({park_id: parkId}).update({use_status: 1});
+          // console.log(isUpdate);
           return this.success({
             status: 'ok', // 注册状态成功
             info: '订单信息登记成功',
@@ -98,7 +99,14 @@ module.exports = class extends Base {
           pay_type: payType
         };
         const isUpdate = await orderModel.where({order_no: orderNo}).update(sqlData);
-        console.log(isUpdate);
+        const carbarnModel = this.model('carbarn');
+        const useStatus = this.post('use_status'); // 车位使用状态
+        const parkId = this.post('park_id'); // 订单号
+        const sqlData2 = {
+          use_status: useStatus
+        };
+        const isUpdate2 = await carbarnModel.where({park_id: parkId}).update(sqlData2);
+        console.log(isUpdate2);
         if (think.isEmpty(isUpdate)) {
           return this.fail(403, '支付登记失败');
         } else {
